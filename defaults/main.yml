@@ -1,0 +1,12 @@
+#Variables for rabbitmq
+---
+
+rabbitmq_apt_key: "http://www.rabbitmq.com/rabbitmq-signing-key-public.asc"
+rabbitmq_repository: "deb http://www.rabbitmq.com/debian/ testing main"
+rabbitmq_pkg: "rabbitmq-server"
+
+rabbitmq_config_dir: "/etc/rabbitmq"
+
+rabbitmq_port: 5672
+#rabbitmq_ip: "{{ ansible_default_ipv4.address }}"
+rabbitmq_ip: "127.0.0.1"

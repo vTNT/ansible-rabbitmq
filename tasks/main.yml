@@ -1,0 +1,26 @@
+---
+
+- name: trust rabbit repository
+  apt_key: url={{ rabbitmq_apt_key }} state=present
+
+- name: add rabbit repository
+  apt_repository: repo="{{ rabbitmq_repository }}" state=present update_cache=yes
+
+- name: install rabbitmq_pkg if debian
+  apt: pkg="{{ rabbitmq_pkg }}" state=installed force=yes
+
+# Defaulting to /etc/rabbitmq
+- name: create rabbitmq config directory
+  file: >
+    path={{ rabbitmq_config_dir }}
+    owner=rabbitmq group=rabbitmq mode=0755 state=directory
+
+- name: add rabbitmq environment configuration
+  template: >
+    src=rabbitmq-env.conf.j2 dest={{ rabbitmq_config_dir }}/rabbitmq-env.conf
+    owner=rabbitmq group=rabbitmq mode=0644
+  notify:
+   - restart rabbitmq
+
+- name: start rabbitmq
+  service: name=rabbitmq-server state=started
